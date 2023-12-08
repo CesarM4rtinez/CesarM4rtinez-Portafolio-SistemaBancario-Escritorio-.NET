@@ -1,4 +1,4 @@
-/* CREACIÓN DE VISTAS DE SISTEMA BANCARIO */
+/* CREACIÃ“N DE VISTAS DE SISTEMA BANCARIO */
 USE SISTEMA_BANCARIO
 GO
 --------------------------------------------------------------------------------------------------------------------
@@ -77,7 +77,6 @@ SELECT
     E.NOM_EMPLEADO,
     E.APE_PATE,
     E.APE_MATE,
-    E.FECHA_NAC,
     E.DIRECCION,
     E.DNI_EM,
 	E.SUELDO,
@@ -85,7 +84,7 @@ SELECT
 	CE.ID_CARGO_EM,
     CE.NOM_CARGO,
     U.USUARIO,
-    U.CONTRASEÑA,
+    U.CONTRASEÃ‘A,
     U.ADMIN,
 	U.PRESTAMOS,
 	U.CUENTAS,
