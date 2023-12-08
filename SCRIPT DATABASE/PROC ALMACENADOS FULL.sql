@@ -12,11 +12,12 @@ BEGIN
         FECHA_REGISTRO,
         TIPO_PERSONA
 
-    FROM TIPO_CLIENTE
+    FROM TIPO_CLIENTE 
     
     WHERE ESTADO = 1 AND (
             TIPO_PERSONA LIKE '%' + @cTexto + '%'
 		  )
+	ORDER BY ID_TP_PERSONA DESC
 END;
 GO
 -- EXEC USP_ListadoTipoPersonas
@@ -35,6 +36,7 @@ BEGIN
     WHERE ESTADO = 0 AND (
             TIPO_PERSONA LIKE '%' + @cTexto + '%'
 		  )
+	ORDER BY ID_TP_PERSONA DESC
 END;
 GO
 -- EXEC USP_ListadoTipoPersonasCaidas
@@ -132,6 +134,7 @@ BEGIN
 		CAST(C.SUELDO AS VARCHAR) LIKE '%' + @cTexto + '%' OR 
         T.TIPO_PERSONA            LIKE '%' + @cTexto + '%'
 		)
+	ORDER BY C.ID_CLIENTE DESC
 END;
 GO
 -- EXEC USP_ListadoClientes
@@ -171,6 +174,7 @@ BEGIN
 		CAST(C.SUELDO AS VARCHAR) LIKE '%' + @cTexto + '%' OR 
         T.TIPO_PERSONA            LIKE '%' + @cTexto + '%'
 		)
+	ORDER BY C.ID_CLIENTE DESC
 END;
 GO
 -- EXEC USP_ListadoClientesCaidos
@@ -260,14 +264,14 @@ END
 GO
 
 -------------------------------------------------------------------
--- PANEL DE DESICIÓN CLIENTE
+-- PANEL DE DESICIÃ“N CLIENTE
 -------------------------------------------------------------------
 
 CREATE PROC USP_ListadoTipoCliente      
 AS 
   SELECT ID_TP_PERSONA, TIPO_PERSONA 
   FROM TIPO_CLIENTE
-  WHERE ESTADO = 1
+  WHERE ESTADO = 1 ORDER BY ID_TP_PERSONA DESC
 GO
 -- EXEC USP_ListadoTipoCliente
 
@@ -291,7 +295,8 @@ BEGIN
     AND (
            NOM_TARJETA LIKE '%' + @cTexto + '%'
         OR LIMITE      LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_TP_TARJETA DESC
 END;
 GO
 -- EXEC USP_ListadoTipoCredito
@@ -312,7 +317,8 @@ BEGIN
     AND (
            NOM_TARJETA LIKE '%' + @cTexto + '%'
         OR LIMITE      LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_TP_TARJETA DESC
 END
 GO
 -- EXEC USP_ListadoTipoCreditosCaidos
@@ -406,6 +412,7 @@ BEGIN
         OR B.ID_CUENTA        LIKE '%' + @cTexto + '%'
         OR B.CODIGO_CUENTA    LIKE '%' + @cTexto + '%'
         )
+	ORDER BY A.ID_TARJETA_CREDITO DESC
 END
 GO
 -- EXEC USP_ListadoTarjetasCredito
@@ -442,6 +449,7 @@ BEGIN
         OR B.ID_CUENTA        LIKE '%' + @cTexto + '%'
         OR B.CODIGO_CUENTA    LIKE '%' + @cTexto + '%'
         )
+	ORDER BY A.ID_TARJETA_CREDITO DESC
 END
 GO
 -- EXEC USP_ListadoTarjetasCreditoCaidas
@@ -471,7 +479,7 @@ BEGIN
             @nID_CLIENTE,
             @cID_CUENTA,
             @cID_TP_TARJETA,
-            @nSALDO_DISPONIBLE, -- Utiliza el límite obtenido
+            @nSALDO_DISPONIBLE, -- Utiliza el lÃ­mite obtenido
             1
         )
     END;
@@ -511,7 +519,7 @@ BEGIN
 END
 GO
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN TARJETAS DE CREDITO
+-- PANELES DE DESICIÃ“N TARJETAS DE CREDITO
 -------------------------------------------------------------------
 
 CREATE PROCEDURE USP_ListadoTarjetaCreditoCliente        
@@ -519,7 +527,7 @@ AS
   SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE 
   FROM     CLIENTE
   WHERE    ESTADO = 1
-  ORDER BY ID_CLIENTE
+  ORDER BY ID_CLIENTE DESC
 GO
 -- EXEC USP_ListadoTarjetaCreditoCliente
 
@@ -530,17 +538,17 @@ BEGIN
     FROM CUENTA A
     INNER JOIN CLIENTE B ON A.ID_CLIENTE = B.ID_CLIENTE 
 	WHERE A.ESTADO = 1
-    ORDER BY A.ID_CUENTA
+    ORDER BY A.ID_CUENTA DESC
 END
 GO
--- EXEC USP_TarjetasCredito_Clentas
+-- EXEC USP_ListadoTarjetasCreditoCuenta
 
 CREATE PROC USP_ListadoTipoTarjetasCredito       
 AS 
   SELECT ID_TP_TARJETA, NOM_TARJETA 
   FROM TIPO_TARJETA_CREDITO
   WHERE ESTADO = 1
-  ORDER BY ID_TP_TARJETA  
+  ORDER BY ID_TP_TARJETA DESC
 GO
 -- EXEC USP_ListadoTipoTarjetasCredito
 
@@ -562,7 +570,8 @@ BEGIN
     FROM TIPO_CUENTA
 
     WHERE ESTADO = 1 AND
-	      NOM_CUENTA   LIKE '%' + @cTexto + '%'        
+	      NOM_CUENTA   LIKE '%' + @cTexto + '%'
+    ORDER BY ID_TIPO_CUENTA DESC
 END;
 GO
 -- EXEC USP_ListadoTipoCuentas
@@ -579,7 +588,8 @@ BEGIN
     FROM TIPO_CUENTA
 
     WHERE ESTADO = 0 AND
-	      NOM_CUENTA   LIKE '%' + @cTexto + '%'        
+	      NOM_CUENTA   LIKE '%' + @cTexto + '%'
+    ORDER BY ID_TIPO_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoTipoCuentasCaidas
@@ -664,7 +674,8 @@ BEGIN
 		OR A.SALDO_ACTUAL     LIKE '%' + @cTexto + '%'
         OR T.NOM_CLIENTE      LIKE '%' + @cTexto + '%'
         OR T.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY A.ID_CUENTA DESC 
 END
 GO
 -- EXEC USP_ListadoCuentas
@@ -695,7 +706,8 @@ BEGIN
 		OR A.SALDO_ACTUAL     LIKE '%' + @cTexto + '%'
         OR T.NOM_CLIENTE      LIKE '%' + @cTexto + '%'
         OR T.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY A.ID_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoCuentasCaidas
@@ -784,43 +796,6 @@ END
 GO
 
 
-/*
-CREATE PROCEDURE USP_GuardarCuenta
-@nOpcion                INT = 0,
-@cID_CUENTA             INT = 0,
-@cID_TIPO_CUENTA        INT = 0,
-@cID_CLIENTE            INT = 0,
-@cSALDO_ACTUAL          INT = 0
-
-AS
-  IF @nOpcion = 1 -- Nuevo Registro
-    BEGIN
-		INSERT INTO CUENTA(
-				ID_TIPO_CUENTA,
-				ID_CLIENTE,
-				SALDO_ACTUAL,
-				ESTADO
-			    )
-			VALUES 
-			   (
-				@cID_TIPO_CUENTA,
-				@cID_CLIENTE,
-				@cSALDO_ACTUAL,
-				1
-			   )
-	END
-	ELSE -- Actualizar registro
-	BEGIN
-		 UPDATE CUENTA         SET
-				ID_CLIENTE        = @cID_CLIENTE,
-				ID_TIPO_CUENTA    = @cID_TIPO_CUENTA,
-				SALDO_ACTUAL      = @cSALDO_ACTUAL
-			WHERE 
-				ID_CUENTA         = @cID_CUENTA
-	END
-GO
-*/
-
 CREATE PROCEDURE USP_EliminarCuenta
 @nID_CUENTA INT = 0
 AS
@@ -843,7 +818,7 @@ BEGIN
 END
 GO
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN DE CUENTA
+-- PANELES DE DESICIÃ“N DE CUENTA
 -------------------------------------------------------------------
 
 CREATE PROCEDURE USP_ListadoCuentaCliente
@@ -852,7 +827,7 @@ BEGIN
     SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE 
     FROM     CLIENTE
 	WHERE    ESTADO = 1
-    ORDER BY ID_CLIENTE
+    ORDER BY ID_CLIENTE DESC
 END
 GO
 -- EXEC USP_ListadoCuentaCliente
@@ -862,7 +837,7 @@ AS
   SELECT   ID_TIPO_CUENTA, NOM_CUENTA 
   FROM     TIPO_CUENTA
   WHERE    ESTADO = 1
-  ORDER BY ID_TIPO_CUENTA
+  ORDER BY ID_TIPO_CUENTA DESC
 GO
 -- EXEC USP_ListadoTipoCuenta
 
@@ -886,7 +861,8 @@ BEGIN
     AND (
            ID_TP_PRESTAMO     LIKE '%' + @cTexto + '%'
 		OR NOM_PRESTAMO       LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_TP_PRESTAMO DESC
 END
 GO
 -- EXEC USP_ListadoTipoPrestamo
@@ -905,7 +881,8 @@ BEGIN
     AND (
            ID_TP_PRESTAMO     LIKE '%' + @cTexto + '%'
 		OR NOM_PRESTAMO       LIKE '%' + @cTexto + '%'
-    )
+       )
+	ORDER BY ID_TP_PRESTAMO DESC
 END
 GO
 -- EXEC USP_ListadoTipoPrestamoCaidos
@@ -985,7 +962,8 @@ BEGIN
     AND (
            ID_DIM_TP_PAGO     LIKE '%' + @cTexto + '%'
 		OR TIPO_COBRO         LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_DIM_TP_PAGO DESC
 END
 GO
 -- EXEC USP_ListadoTipoPago_Prestamo
@@ -1004,7 +982,8 @@ BEGIN
     AND (
            ID_DIM_TP_PAGO     LIKE '%' + @cTexto + '%'
 		OR TIPO_COBRO         LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_DIM_TP_PAGO DESC
 END
 GO
 -- EXEC USP_ListadoTipoPago_PrestamoCaido
@@ -1105,7 +1084,8 @@ BEGIN
 		   C.NOM_CLIENTE       LIKE '%' + @cTexto + '%'
         OR C.APE_PATE_CLIENTE  LIKE '%' + @cTexto + '%'
         OR C.APE_MATE_CLIENTE  LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY O.ID_PRESTAMO DESC
 END
 GO
 -- EXEC USP_ListadoPrestamos
@@ -1148,7 +1128,8 @@ BEGIN
 		   C.NOM_CLIENTE       LIKE '%' + @cTexto + '%'
         OR C.APE_PATE_CLIENTE  LIKE '%' + @cTexto + '%'
         OR C.APE_MATE_CLIENTE  LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY O.ID_PRESTAMO DESC
 END
 GO
 -- EXEC USP_ListadoPrestamosCaidos
@@ -1222,7 +1203,7 @@ END
 GO
 
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN DE PRESTAMOS
+-- PANELES DE DESICIÃ“N DE PRESTAMOS
 -------------------------------------------------------------------
 
 CREATE PROCEDURE USP_ListadoPrestamo_Cliente
@@ -1231,7 +1212,7 @@ BEGIN
     SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE 
     FROM     CLIENTE
 	WHERE    ESTADO = 1
-    ORDER BY ID_CLIENTE
+    ORDER BY ID_CLIENTE DESC
 END
 GO
 -- EXEC USP_ListadoPrestamo_Cliente
@@ -1241,7 +1222,7 @@ AS
   SELECT   B.ID_CUENTA, B.CODIGO_CUENTA, C.NOM_CLIENTE, C.APE_PATE_CLIENTE, C.APE_MATE_CLIENTE
   FROM     CUENTA B, CLIENTE C 
   WHERE    C.ID_CLIENTE = B.ID_CLIENTE AND B.ESTADO = 1 AND C.ESTADO = 1
-  ORDER BY B.ID_CUENTA
+  ORDER BY B.ID_CUENTA DESC
 GO
 -- EXEC USP_ListadoPrestamo_Cuenta
 
@@ -1250,7 +1231,7 @@ AS
   SELECT   A.ID_TARJETA_CREDITO, A.CODIGO_TARJETA, C.NOM_CLIENTE, C.APE_PATE_CLIENTE, C.APE_MATE_CLIENTE
   FROM     TARJETA_CREDITO A, CLIENTE C 
   WHERE    A.ID_CLIENTE = C.ID_CLIENTE AND A.ESTADO = 1 AND C.ESTADO = 1
-  ORDER BY A.ID_TARJETA_CREDITO
+  ORDER BY A.ID_TARJETA_CREDITO DESC
 GO
 -- EXEC USP_ListadoPrestamo_TarjetaCredito
 
@@ -1259,7 +1240,7 @@ AS
   SELECT   ID_TP_PRESTAMO, NOM_PRESTAMO
   FROM     TIPO_PRESTAMO 
   WHERE    ESTADO = 1
-  ORDER BY ID_TP_PRESTAMO
+  ORDER BY ID_TP_PRESTAMO DESC
 GO
 -- EXEC USP_ListadoPrestamo_TipoPrestamo
 
@@ -1268,7 +1249,7 @@ AS
   SELECT   ID_DIM_TP_PAGO, TIPO_COBRO
   FROM     TIPO_PAGO
   WHERE    ESTADO = 1
-  ORDER BY ID_DIM_TP_PAGO
+  ORDER BY ID_DIM_TP_PAGO DESC
 GO
 -- EXEC USP_ListadoPrestamo_TipoPago
 
@@ -1291,7 +1272,8 @@ BEGIN
    WHERE ESTADO = 1
     AND (
          NOM_CARGO     LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_CARGO_EM DESC
 END
 GO
 -- EXEC USP_ListadoCargoEmpleado
@@ -1310,7 +1292,8 @@ BEGIN
    WHERE ESTADO = 0
     AND (
          NOM_CARGO     LIKE '%' + @cTexto + '%'
-    )
+        )
+	ORDER BY ID_CARGO_EM DESC
 END
 GO
 -- EXEC USP_ListadoCargoEmpleadosCaidos
@@ -1382,7 +1365,7 @@ BEGIN
 	    ID_USER,
         FECHA_REGISTRO,
 		USUARIO,
-		CONTRASEÑA,
+		CONTRASEÃ‘A,
 		ADMIN,
 		PRESTAMOS,
 		CUENTAS,
@@ -1392,8 +1375,9 @@ BEGIN
    WHERE ESTADO = 1
     AND (
            USUARIO      LIKE '%' + @cTexto + '%'
-		OR CONTRASEÑA   LIKE '%' + @cTexto + '%'
-    )
+		OR CONTRASEÃ‘A   LIKE '%' + @cTexto + '%'
+        )
+	ORDER BY ID_USER DESC
 END
 GO
 -- EXEC USP_ListadoUsuarios
@@ -1406,7 +1390,7 @@ BEGIN
 	    ID_USER,
         FECHA_REGISTRO,
 		USUARIO,
-		CONTRASEÑA,
+		CONTRASEÃ‘A,
 		ADMIN,
 		PRESTAMOS,
 		CUENTAS,
@@ -1416,8 +1400,9 @@ BEGIN
    WHERE ESTADO = 0
     AND (
            USUARIO      LIKE '%' + @cTexto + '%'
-		OR CONTRASEÑA   LIKE '%' + @cTexto + '%'
-    )
+		OR CONTRASEÃ‘A   LIKE '%' + @cTexto + '%'
+        )
+	ORDER BY ID_USER DESC
 END
 GO
 -- EXEC USP_ListadoUsuariosCaidos
@@ -1426,7 +1411,7 @@ CREATE PROCEDURE USP_GuardarUsuarios
 @nOpcion                INT = 0,
 @cID_USER               INT = 0,
 @cUSUARIO               VARCHAR(15),
-@cCONTRASEÑA            VARCHAR(15),
+@cCONTRASEÃ‘A            VARCHAR(15),
 @cADMIN                 BIT,
 @cPRESTAMOS             BIT,
 @cCUENTAS               BIT,
@@ -1438,7 +1423,7 @@ AS
 		INSERT INTO 
 		        USUARIO_EM(
 				USUARIO,
-				CONTRASEÑA,
+				CONTRASEÃ‘A,
 				ADMIN,
 				PRESTAMOS,
 				CUENTAS,
@@ -1448,7 +1433,7 @@ AS
 			VALUES 
 			   (
 				@cUSUARIO,
-				@cCONTRASEÑA,
+				@cCONTRASEÃ‘A,
 				@cADMIN,
 				@cPRESTAMOS,
 				@cCUENTAS,
@@ -1460,7 +1445,7 @@ AS
 	BEGIN
 		 UPDATE USUARIO_EM     SET
 				USUARIO      = @cUSUARIO,
-				CONTRASEÑA   = @cCONTRASEÑA,
+				CONTRASEÃ‘A   = @cCONTRASEÃ‘A,
 				ADMIN        = @cADMIN,
 				PRESTAMOS    = @cPRESTAMOS,
 				CUENTAS      = @cCUENTAS,
@@ -1497,17 +1482,17 @@ GO
 -- EXEC USP_LevantarUsuarios
 
 -------------------------------------------------------------------
--- PARA EL LOGEO DEL SISTEMA
+-- PARA EL LOGEO DEL SISTEMA -- Â¡PRECAUTION! ... NO TOCAR!!!!
 -------------------------------------------------------------------
 CREATE PROCEDURE USP_LoginUS
     @USUARIO VARCHAR(50),
-    @CONTRASEÑA VARCHAR(50) -- Suponiendo que la contraseña está almacenada como texto en la base de datos
+    @CONTRASEÃ‘A VARCHAR(50) -- Suponiendo que la contraseÃ±a estÃ¡ almacenada como texto en la base de datos
 AS
 BEGIN
     SELECT *
     FROM  V_EMPLEADO
-    WHERE USUARIO = @USUARIO AND CONTRASEÑA = @CONTRASEÑA
-	      AND ESTADO_US = 1 -- Debes aplicar hash a la contraseña antes de almacenarla y compararla
+    WHERE USUARIO = @USUARIO AND CONTRASEÃ‘A = @CONTRASEÃ‘A
+	      AND ESTADO_US = 1 -- Debes aplicar hash a la contraseÃ±a antes de almacenarla y compararla
 END
 GO
 -- EXEC USP_LoginUS
@@ -1532,6 +1517,7 @@ BEGIN
     AND (
          DIRECCION      LIKE '%' + @cTexto + '%'
         )
+	ORDER BY ID_SUCURSAL DESC
 END
 GO
 -- EXEC USP_ListadoSucursales
@@ -1550,6 +1536,7 @@ BEGIN
     AND (
          DIRECCION      LIKE '%' + @cTexto + '%'
         )
+	ORDER BY ID_SUCURSAL DESC
 END
 GO
 -- EXEC USP_ListadoSucursalesCaidas
@@ -1625,7 +1612,6 @@ BEGIN
 	Z.NOM_EMPLEADO,
 	Z.APE_PATE,
 	Z.APE_MATE,
-	Z.FECHA_NAC,
 	Z.DIRECCION,
 	Z.DNI_EM,
 	Z.SUELDO,
@@ -1642,7 +1628,8 @@ BEGIN
 		  Z.NOM_EMPLEADO      LIKE '%' + @cTexto + '%' OR
 		  Z.APE_PATE          LIKE '%' + @cTexto + '%' OR
 		  Z.APE_MATE          LIKE '%' + @cTexto + '%' 
-    )
+        )
+	ORDER BY Z.ID_EM DESC
 END
 GO
 -- EXEC USP_ListadoEmpleado
@@ -1660,7 +1647,6 @@ BEGIN
 	Z.NOM_EMPLEADO,
 	Z.APE_PATE,
 	Z.APE_MATE,
-	Z.FECHA_NAC,
 	Z.DIRECCION,
 	Z.DNI_EM,
 	Z.SUELDO,
@@ -1677,7 +1663,8 @@ BEGIN
 		  Z.NOM_EMPLEADO      LIKE '%' + @cTexto + '%' OR
 		  Z.APE_PATE          LIKE '%' + @cTexto + '%' OR
 		  Z.APE_MATE          LIKE '%' + @cTexto + '%' 
-    )
+        )
+    ORDER BY Z.ID_EM DESC
 END
 GO
 -- EXEC USP_ListadoEmpleadosCaidos
@@ -1691,7 +1678,6 @@ CREATE PROCEDURE USP_GuardarEmpleado
 @cNOM_EMPLEADO          VARCHAR(20),
 @cAPE_PATE              VARCHAR(12),
 @cAPE_MATE              VARCHAR(12),
-@cFECHA_NAC             DATE,
 @cDIRECCION             VARCHAR(25),
 @cDNI_EM                VARCHAR(10),
 @cSUELDO                INT = 0
@@ -1706,7 +1692,6 @@ AS
 				NOM_EMPLEADO,
 				APE_PATE,
 				APE_MATE,
-				FECHA_NAC,
 				DIRECCION,
 				DNI_EM,
 				SUELDO,
@@ -1720,7 +1705,6 @@ AS
 				@cNOM_EMPLEADO,
 				@cAPE_PATE,
 				@cAPE_MATE,
-				@cFECHA_NAC,
 				@cDIRECCION,
 				@cDNI_EM,
 				@cSUELDO,
@@ -1736,7 +1720,6 @@ AS
 				NOM_EMPLEADO = @cNOM_EMPLEADO,
 				APE_PATE     = @cAPE_PATE,
 				APE_MATE     = @cAPE_MATE,
-				FECHA_NAC    = @cFECHA_NAC,
 				DIRECCION    = @cDIRECCION,
 				DNI_EM       = @cDNI_EM,
 				SUELDO       = @cSUELDO
@@ -1754,6 +1737,10 @@ BEGIN
     UPDATE EMPLEADO
     SET    ESTADO = 0
     WHERE  ID_EM  = @nID_EM;
+
+	UPDATE V_EMPLEADO
+	SET    ESTADO_US = 0
+	WHERE  ID_EM     = @nID_EM
 END
 GO
 
@@ -1765,11 +1752,15 @@ BEGIN
     UPDATE EMPLEADO
     SET    ESTADO = 1
     WHERE  ID_EM  = @nID_EM;
+
+	UPDATE V_EMPLEADO
+	SET    ESTADO_US = 1
+	WHERE  ID_EM     = @nID_EM
 END
 GO
 
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN EMPLEADO
+-- PANELES DE DESICIÃ“N EMPLEADO
 -------------------------------------------------------------------
 CREATE PROCEDURE USP_ListadoEmpleado_Cargo
 AS
@@ -1777,7 +1768,7 @@ BEGIN
     SELECT   ID_CARGO_EM, NOM_CARGO 
     FROM     CARGO_EMPLEADO
 	WHERE    ESTADO = 1
-    ORDER BY ID_CARGO_EM
+    ORDER BY ID_CARGO_EM DESC
 END
 GO
 -- EXEC USP_ListadoEmpleado_Cargo
@@ -1787,7 +1778,7 @@ AS
   SELECT   ID_USER, USUARIO
   FROM     USUARIO_EM
   WHERE    ESTADO = 1
-  ORDER BY ID_USER
+  ORDER BY ID_USER DESC
 GO
 -- EXEC USP_ListadoEmpleado_Usuario
 
@@ -1796,7 +1787,7 @@ AS
   SELECT   ID_SUCURSAL, DIRECCION
   FROM     SUCURSAL
   WHERE    ESTADO = 1
-  ORDER BY ID_SUCURSAL
+  ORDER BY ID_SUCURSAL DESC
 GO
 -- EXEC USP_ListadoEmpleado_Sucursal
 
@@ -1845,6 +1836,7 @@ BEGIN
 		  D.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  D.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_ABONO DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoAbono
@@ -1890,6 +1882,7 @@ BEGIN
 		  D.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  D.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_ABONO DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoAbonoCaido
@@ -1935,6 +1928,7 @@ BEGIN
 		  D.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  D.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_ABONO DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoAbonoPri
@@ -2013,7 +2007,7 @@ GO
 -- EXEC USP_LevantarMovimientoAbono
 
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN DE MOVIMIENTOS DE ABONO
+-- PANELES DE DESICIÃ“N DE MOVIMIENTOS DE ABONO
 -------------------------------------------------------------------
 CREATE PROCEDURE USP_ListadoMovimientoAbono_Cuenta
 AS
@@ -2021,7 +2015,7 @@ BEGIN
     SELECT   A.ID_CUENTA, B.NOM_CLIENTE, B.APE_PATE_CLIENTE, B.APE_MATE_CLIENTE, A.CODIGO_CUENTA 
     FROM     CUENTA A, CLIENTE B
 	WHERE    A.ID_CLIENTE = B.ID_CLIENTE AND B.ESTADO = 1 AND A.ESTADO = 1
-    ORDER BY A.ID_CUENTA
+    ORDER BY A.ID_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoAbono_Cuenta
@@ -2032,7 +2026,7 @@ AS
   FROM     PRESTAMO A, CLIENTE B
   WHERE    B.ESTADO = 1 AND A.ESTADO = 1 AND
            A.ID_CLIENTE = B.ID_CLIENTE
-  ORDER BY A.ID_PRESTAMO
+  ORDER BY A.ID_PRESTAMO DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Prestamo
 
@@ -2041,7 +2035,7 @@ AS
   SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE
   FROM     CLIENTE
   WHERE    ESTADO = 1
-  ORDER BY ID_CLIENTE
+  ORDER BY ID_CLIENTE DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Cliente
 
@@ -2050,7 +2044,7 @@ AS
   SELECT   ID_EM, NOM_EMPLEADO, APE_PATE, APE_MATE
   FROM     EMPLEADO
   WHERE    ESTADO = 1
-  ORDER BY ID_EM
+  ORDER BY ID_EM DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Empleado
 
@@ -2059,7 +2053,7 @@ AS
   SELECT   ID_SUCURSAL, DIRECCION
   FROM     SUCURSAL
   WHERE    ESTADO = 1
-  ORDER BY ID_SUCURSAL
+  ORDER BY ID_SUCURSAL DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Sucursal
 
@@ -2104,6 +2098,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoCuentas
@@ -2145,6 +2140,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoCuentasCaidas
@@ -2185,6 +2181,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoCuentasPri
@@ -2217,7 +2214,7 @@ BEGIN
     FROM CUENTA
     WHERE ID_CUENTA = @cID_CUENTA
 
-    -- Verificar si el monto de salida hará que el saldo disponible sea menor que cero
+    -- Verificar si el monto de salida harÃ¡ que el saldo disponible sea menor que cero
     IF (@nSaldoActual - @cMONTO_SALIDA) < 0
     BEGIN
       RAISERROR('El saldo de la cuenta de ahorro no puede ser negativo.', 16, 1)
@@ -2287,7 +2284,7 @@ END
 GO
 
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN DE MOVIMIENTOS DE CUENTAS
+-- PANELES DE DESICIÃ“N DE MOVIMIENTOS DE CUENTAS
 -------------------------------------------------------------------
 CREATE PROCEDURE USP_ListadoMovimientoCuenta_Cuenta
 AS
@@ -2296,7 +2293,7 @@ BEGIN
     FROM       CUENTA A
 	INNER JOIN CLIENTE B ON A.ID_CLIENTE = B.ID_CLIENTE
 	WHERE    A.ESTADO = 1 AND B.ESTADO = 1
-    ORDER BY A.ID_CUENTA
+    ORDER BY A.ID_CUENTA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoAbono_Cuenta
@@ -2306,7 +2303,7 @@ AS
   SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE
   FROM     CLIENTE
   WHERE    ESTADO = 1
-  ORDER BY ID_CLIENTE
+  ORDER BY ID_CLIENTE DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Cliente
 
@@ -2315,7 +2312,7 @@ AS
   SELECT   ID_EM, NOM_EMPLEADO, APE_PATE, APE_MATE
   FROM     EMPLEADO
   WHERE    ESTADO = 1
-  ORDER BY ID_EM
+  ORDER BY ID_EM DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Empleado
 
@@ -2324,7 +2321,7 @@ AS
   SELECT   ID_SUCURSAL, DIRECCION
   FROM     SUCURSAL
   WHERE    ESTADO = 1
-  ORDER BY ID_SUCURSAL
+  ORDER BY ID_SUCURSAL DESC
 GO
 -- EXEC USP_ListadoMovimientoAbono_Sucursal
 
@@ -2368,6 +2365,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_TARJETA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoTarjetas
@@ -2408,6 +2406,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_TARJETA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoTarjetasCaidas
@@ -2447,6 +2446,7 @@ BEGIN
 		  C.APE_PATE_CLIENTE LIKE '%' + @cTexto + '%' OR
 		  C.APE_MATE_CLIENTE LIKE '%' + @cTexto + '%' 
         )
+	ORDER BY A.ID_MV_TARJETA DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoTarjetasPri
@@ -2463,7 +2463,7 @@ AS
 BEGIN
   DECLARE @nSaldoActual DECIMAL
   
-  -- Obtener el saldo actual de la tarjeta de crédito
+  -- Obtener el saldo actual de la tarjeta de crÃ©dito
   SELECT @nSaldoActual = SALDO_DISPONIBLE
   FROM TARJETA_CREDITO
   WHERE ID_TARJETA_CREDITO = @cID_TARJETA_CREDITO
@@ -2471,7 +2471,7 @@ BEGIN
   -- Verificar si el monto de salida no causa un saldo negativo
   IF (@nSaldoActual - @cMONTO_SALIDA) < 0
   BEGIN
-    RAISERROR('El monto de salida excede el saldo disponible en la tarjeta de crédito.', 16, 1)
+    RAISERROR('El monto de salida excede el saldo disponible en la tarjeta de crÃ©dito.', 16, 1)
     RETURN
   END
 
@@ -2533,7 +2533,7 @@ END
 GO
 
 -------------------------------------------------------------------
--- PANELES DE DESICIÓN DE MOVIMIENTOS DE TARJETAS
+-- PANELES DE DESICIÃ“N DE MOVIMIENTOS DE TARJETAS
 -------------------------------------------------------------------
 CREATE PROCEDURE USP_ListadoMovimientoTarjeta_TarjetaCredito
 AS
@@ -2542,7 +2542,7 @@ BEGIN
     FROM   TARJETA_CREDITO A
     INNER JOIN CLIENTE B ON A.ID_CLIENTE = B.ID_CLIENTE
 	WHERE A.ESTADO = 1 AND B.ESTADO = 1
-    ORDER BY A.ID_TARJETA_CREDITO
+    ORDER BY A.ID_TARJETA_CREDITO DESC
 END
 GO
 -- EXEC USP_ListadoMovimientoTarjeta_TarjetaCredito
@@ -2552,7 +2552,7 @@ AS
   SELECT   ID_CLIENTE, NOM_CLIENTE, APE_PATE_CLIENTE, APE_MATE_CLIENTE
   FROM     CLIENTE
   WHERE    ESTADO = 1
-  ORDER BY ID_CLIENTE
+  ORDER BY ID_CLIENTE DESC
 GO
 -- EXEC USP_ListadoMovimientoTarjeta_Cliente
 
@@ -2561,7 +2561,7 @@ AS
   SELECT   ID_EM, NOM_EMPLEADO, APE_PATE, APE_MATE
   FROM     EMPLEADO
   WHERE    ESTADO = 1
-  ORDER BY ID_EM
+  ORDER BY ID_EM DESC
 GO
 -- EXEC USP_ListadoMovimientoTarjeta_Empleado
 
@@ -2570,7 +2570,7 @@ AS
   SELECT   ID_SUCURSAL, DIRECCION
   FROM     SUCURSAL
   WHERE    ESTADO = 1
-  ORDER BY ID_SUCURSAL
+  ORDER BY ID_SUCURSAL DESC
 GO
 -- EXEC USP_ListadoMovimientoTarjeta_Sucursal
 
