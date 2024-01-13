@@ -1,4 +1,3 @@
 # Sistema-Bancario
 
-![Uploading image.png…]()
-
+Uploading image.png…
